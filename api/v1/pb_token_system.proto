@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package token_system.api.v1;
+
+
+enum Error {
+  OK = 0;
+  TOPIC_NOT_EXIST = 1;
+  TOPIC_IS_NULL = 2;
+  TOPIC_ALREADY_EXIST = 3;
+  TOPIC_INCORRECTNESS = 4;
+  TOKEN_NOT_EXIST = 5;
+  TOKEN_ALREADY_START = 6;
+  TOKEN_NOT_START = 7;
+  OUT_OF_RANGE_BUCKET = 8;
+  NOT_ENOUGH_TOKEN = 9;
+  BUCKET_INCORRECTNESS = 17;
+  TOKEN_PER_SECOND_INCORRECTNESS = 18;
+  CREATE_TOKEN_FAILED = 19;
+  SERVER_FAULT = 20;
+}
+
+
+message CreateTokenReq {
+  string topic          = 1;
+  uint32 bucket         = 2;
+  uint32 tokenPerSecond = 3;
+}
+
+message CreateTokenResp {
+  Error err = 1;
+}
+
+message StartTokenReq {
+  string topic = 1;
+}
+
+message StartTokenResp {
+  Error err = 1;
+}
+
+message GetTokenReq {
+  string topic = 1;
+  uint32 count = 2;
+}
+
+message GetTokenResp {
+  Error err = 1;
+}
+
+message DeleteTokenReq {
+  string topic = 1;
+}
+
+message DeleteTokenResp {
+  Error err = 1;
+}
+
+service API {
+  rpc CreateToken(CreateTokenReq) returns (CreateTokenResp) {}
+  rpc StartToken(StartTokenReq) returns (StartTokenResp) {}
+  rpc GetToken(GetTokenReq) returns (GetTokenResp) {}
+  rpc DeleteToken(DeleteTokenReq) returns (DeleteTokenResp) {}
+}
